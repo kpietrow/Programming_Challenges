@@ -4,22 +4,26 @@
 
 def main
   # get score
-  score = Integer(gets.chomp)
+  score = Integer(ARGV[0])
+  point_intervals = [8, 7, 3]
+  
   # sort out some immediate invalids
   if (score == 1) or (score == 2) or (score == 4) or (score == 5)
     puts "Invalid Score"
-  # test for a "pure", easily divisible score
-  elsif (score % 3 == 0) or (score % 7 == 0) or (score % 8 == 0)
-    puts "Valid Score"
   # in depth testing for remaining scores 
   else 
-    score = score % 8
-    score = score % 7
-    score = score % 3
+    for points in point_intervals
+    	score = score % points
+    	if score == 0
+    		break
+    	else
+    		score = score + points
+    	end
+    end
     if score == 0
-      puts "Valid Score"
+    	puts "Valid Score"
     else
-      puts "Invalid Score"
+    	puts "Invalid Score"
     end
   end
 end

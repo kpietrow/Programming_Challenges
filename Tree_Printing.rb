@@ -3,14 +3,12 @@
 # 1/28/14
 
 def main
-  input = gets.chomp.split(" ")
+  input = ARGV
   num_characters = Integer(input[0])
   base = String(input[1])
   leaves = String(input[2])
   
   count = 1
-  
-  puts "12345678901234567890"
   
   # printing loop
   for i in (1..num_characters).step(2)
@@ -41,6 +39,7 @@ def main
   for i in 0..2
     print base
   end
+  puts ""
 end
 
 

@@ -5,7 +5,7 @@ require "cmath"
 
 def main
   # retrieve console input
-  input = gets.chomp.split(" ").map(&:to_f)
+  input = ARGV.map(&:to_f)
   sides, circumradius = input[0], input[1]
   
   # calculate total circumference
