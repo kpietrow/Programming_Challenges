@@ -2,20 +2,67 @@
 
 # test
 
-a = Array.new(4) { Array.new(2) }
-input = [1,2.2,3,4,5,6,7,9,10]
-hi = 3
-b = gets.chomp
+require 'mathn'
+
+
+a = Hash.new
+b = Hash.new
+c = Array.new {Array.new}
+
+
+a["0"] = 0
+a["1"] = 0
+a["6"] = 0
+a["8"] = 0
+a["2"] = 0
+a["3"] = 3
+a["9"] = 8
+
+print "a: "
+print a
 
 
 
-#a[input[0]] = [input[1..(input.size())]]
-#puts a[1]
+b = Array.new
+b[0] = ["29", 0]
+b[1] = ["30", 0]
+b[2] = ["31", 0]
 
-for i in 0..hi
-	a[i] = [input[1], input[2]]
+puts "\n"
+print a.sort_by {|c, b| b}
+
+a = a.sort_by {|c, b| b}
+
+for i in a
+	if c.length < 4
+		c.push([i[0]i[1]])
+	elsif c.length == 4
+		tempK = ""
+		tempV = 0
+		tempVK = nil
+		higher = true
+		c.each {|key, value|
+			if i[1] == value and i[0] > key and key < tempK
+				tempK = key
+				higher = false
+			elsif i[1] < value and tempVK == nil
+				tempVK = key
+				tempV = value
+				higher = false
+			elsif i[1] < value and tempVK not nil and value > tempV
+				tempVK = key
+				tempV = value
+				higher = false
+			end
+		}
+		if tempVK not nil
+			c.delete(tempV)
+			c[i[0]] = i[1]
+			
+		end
+	end
 end
 
-print b.is_a? String
-print b.is_a? Integer
-print b.is_a? Float
+puts "\n\n"
+puts c
+
