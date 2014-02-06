@@ -35,30 +35,35 @@ a = a.sort_by {|c, b| b}
 
 for i in a
 	if c.length < 4
-		c.push([i[0]i[1]])
+		c[c.length + 1] = i.to_a
 	elsif c.length == 4
 		tempK = ""
+		tempKV = 0
 		tempV = 0
 		tempVK = nil
 		higher = true
 		c.each {|key, value|
 			if i[1] == value and i[0] > key and key < tempK
 				tempK = key
+				tempKV = value
 				higher = false
 			elsif i[1] < value and tempVK == nil
 				tempVK = key
 				tempV = value
 				higher = false
-			elsif i[1] < value and tempVK not nil and value > tempV
+			elsif i[1] < value and (tempVK != nil) and value > tempV
 				tempVK = key
 				tempV = value
 				higher = false
 			end
+			puts "one success!"
 		}
-		if tempVK not nil
-			c.delete(tempV)
-			c[i[0]] = i[1]
-			
+		if higher
+			break
+		elsif (tempVK != nil)
+			c[c.index([tempVK, tempV])] = i.to_a
+		else
+			c[c.index([tempK, tempKV])] = i.to_a
 		end
 	end
 end
