@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # http://www.quora.com/challenges#nearby
 
-require 'mathn'
-
 # calculates distance on a graph
 def distance (x1, y1, x2, y2)
 	return Math.sqrt((x2 - x1)**2 + (y2 - y1)**2).round(3)
@@ -50,21 +48,22 @@ def main_topic_search (query, topics)
 	for topic in topics
 		
 		# distance on graph
-		d_graph = distance(topic[0], query[1], topic[1], query[2])
+		d_graph = distance(topic[1], topic[2], query[1], query[2])
 	
 		# make sure to start off new results list with an entry
 		if t_list.length == 0
-			t_list.push([topics.index(topic), d_graph])
+			t_list.push([topic[0], d_graph])
 			
 		# preliminary check to see that we're not wasting our time with a very
 		# high number, or if new result list isn't full yet
 		elsif d_graph <= t_list[t_list.length - 1][1] or t_list.length < query[0]
-			
+
 			# pass in topic id, distance, and the result list
-			t_list = t_search(query[0], [topics.index(topic), d_graph], t_list)
+			t_list = t_search(query[0], [topic[0], d_graph], t_list)
 		end
 	end
 	
+	puts "\nresults: "
 	for topic in t_list
 		print topic[0]
 		print " "
@@ -92,7 +91,7 @@ def main
 	# receive topics
 	for i in 0..(num_topics - 1)
 		input = gets.chomp.split(" ")
-		topics.push([Float(input[1]), Float(input[2])])
+		topics.push([Integer(input[0]), Float(input[1]), Float(input[2])])
 	end
 	
 	# receive questions

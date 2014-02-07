@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
+x2 = 0.0
+x1 = 2.0
+y2 = 0.0
+y1 = 2.0
 
-for i in 1..3
-	puts i
-end
+puts Math.sqrt((x2 - x1)**2 + (y2 - y1)**2).round(3)
