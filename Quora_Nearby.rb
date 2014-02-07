@@ -32,12 +32,19 @@ def run_topic_search (num_results, loc1, loc2, topics)
 	for i in results
 		if new_results.length < num_results
 			new_results[i[0]] = i[1]
-		end
 		else
+			new_results.each_value{|value|
+				if 
+		end
 	end
 	puts ""
 	puts new_results
 end
+
+
+
+
+
 
 def run_question_search (num_results, loc1, loc2, questions, topics)
 	
