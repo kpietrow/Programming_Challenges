@@ -3,42 +3,72 @@
 
 require 'mathn'
 
-def test_loc
-	
+# calculates distance on a graph
+def distance (x1, y1, x2, y2)
+	return Math.sqrt((x2 - x1)**2 + (y2 - y1)**2).round(3)
 end
 
-def run_topic_search (num_results, loc1, loc2, topics)
-	puts "run_topic"
-	results = Hash.new
-	new_results = Hash.new
+# search a specific topic
+def t_search(num_results, topic, t_list)
+	# creates empty, new refined array
+	new_t_list = Array.new {Array.new}
 	
-	for i in topics
-		result = Math.sqrt((loc1 - i[1][0])**2 + (loc2 - i[1][1])**2).round(3)
-		results[i[0]] = result
-	end
-	print "prelim results: "
-	print results
-	
-	results = results.sort_by { |id, distance| distance }
-	
-	puts "\n"
-	print results
-	
-	temp = 0
-	
-	# results.take(num_results)
-	# each_value
-	
-	for i in results
-		if new_results.length < num_results
-			new_results[i[0]] = i[1]
+	# loop through old refined array
+	for i in t_list
+		
+		# test candidate against fresh, or recently usurped, value from old refined list 
+		# if distance is lower, or is the same distance and/or higher ID, add usurper to new list
+		if i[1] > topic[1] or (i[1] == topic[1] and i[0] < topic[0])
+			new_t_list.push(topic)
+			
+			# keep track of the usurped value
+			topic = i
+			
+		# else we're good, so push old value
 		else
-			new_results.each_value{|value|
-				if 
+			new_t_list.push(i)
 		end
 	end
-	puts ""
-	puts new_results
+	# if length of list is too short, give value freebie to the end
+	if new_t_list.length < num_results
+		new_t_list.push(topic)
+	end
+	return new_t_list
+end
+
+
+# Will coordinate each query's search from within this function
+def main_topic_search (query, topics)
+	# note to self, query structured: number of results, x, y
+	# and topic structured: id, x, y
+	puts "run_topic"
+	
+	# create new array for query results
+	t_list = Array.new {Array.new}
+	
+	# go through topics 1-by-1
+	for topic in topics
+		
+		# distance on graph
+		d_graph = distance(topic[0], query[1], topic[1], query[2])
+	
+		# make sure to start off new results list with an entry
+		if t_list.length == 0
+			t_list.push([topics.index(topic), d_graph])
+			
+		# preliminary check to see that we're not wasting our time with a very
+		# high number, or if new result list isn't full yet
+		elsif d_graph <= t_list[t_list.length - 1][1] or t_list.length < query[0]
+			
+			# pass in topic id, distance, and the result list
+			t_list = t_search(query[0], [topics.index(topic), d_graph], t_list)
+		end
+	end
+	
+	for topic in t_list
+		print topic[0]
+		print " "
+	end
 end
 
 
@@ -55,34 +85,35 @@ def main
 	input = gets.chomp.split(" ").map(&:to_i)
 	num_topics, num_questions, num_queries = input[0], input[1], input[2]
 
-	topics = Hash.new
-	questions = Hash.new
+	topics = Array.new {Array.new}
+	questions = Array.new {Array.new}
 	queries = Array.new(num_queries) { Array.new(4) }
 	
+	# receive topics
 	for i in 0..(num_topics - 1)
 		input = gets.chomp.split(" ")
-		print input
-		topics[input[0]] = [Float(input[1]), Float(input[2])]
-		puts topics
+		topics.push([Float(input[1]), Float(input[2])])
 	end
 	
+	# receive questions
 	for i in 0..(num_questions - 1)
 		input = gets.chomp.split(" ")
-		print input
-		questions[input[0]] = input[1..(input.size())].map(&:to_i)
+		questions.push(input[0], input[1..(input.size())].map(&:to_i))
 		puts questions
 	end
 	
+	# receive queries
 	for i in 0..(num_queries - 1)
 		puts "queries activated"
 		input = gets.chomp.split(" ")
 		queries[i] = [input[0], Integer(input[1]), Float(input[2]), Float(input[3])]
 	end
 	
+	# run through queries
 	for entry in queries
 		if entry[0] == "t"
-			puts "topic_search activation"
-			run_topic_search(entry[1], entry[2], entry[3], topics)
+			puts "topic_search activation" 
+			main_topic_search([entry[1], entry[2], entry[3]], topics)
 		#else
 		#	run_question_search(entry[1], entry[2], entry[3], questions, topics)
 		end
