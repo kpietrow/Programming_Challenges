@@ -70,7 +70,12 @@ def main_topic_search (query, topics)
 	end
 end
 
+def main_question_search (query, questions, topics)
+	
 
+
+
+end
 
 
 
@@ -96,9 +101,8 @@ def main
 	
 	# receive questions
 	for i in 0..(num_questions - 1)
-		input = gets.chomp.split(" ")
-		questions.push(input[0], input[1..(input.size())].map(&:to_i))
-		puts questions
+		input = gets.chomp.split(" ").map(&:to_i)
+		questions.push(input)
 	end
 	
 	# receive queries
@@ -113,8 +117,8 @@ def main
 		if entry[0] == "t"
 			puts "topic_search activation" 
 			main_topic_search([entry[1], entry[2], entry[3]], topics)
-		#else
-		#	run_question_search(entry[1], entry[2], entry[3], questions, topics)
+		else
+			main_question_search([entry[1], entry[2], entry[3]], questions, topics)
 		end
 	end
 end
