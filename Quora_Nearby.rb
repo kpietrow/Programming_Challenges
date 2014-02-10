@@ -37,7 +37,7 @@ end
 
 # Will coordinate each query's search from within this function
 def main_topic_search (query, topics)
-	# note to self, query structured: number of results, x, y
+	# note to self, query structure: number of results, x, y
 	# and topic structured: id, x, y
 	puts "run_topic"
 	
@@ -71,9 +71,14 @@ def main_topic_search (query, topics)
 end
 
 def main_question_search (query, questions, topics)
+	# note to self, query structure: number of results, x, y
+	# and query structured: id, num of topics, topic ids
+	# topic: id, x, y
 	
-
-
+	puts "run question search"
+	
+	# possible topics
+	t_possible = Array.new
 
 end
 
